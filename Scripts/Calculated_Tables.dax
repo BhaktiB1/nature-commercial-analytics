@@ -1,0 +1,153 @@
+// Table: 03. Contract measures
+03. Contract measures =
+Row("Column", BLANK())
+
+// Table: 04. Risk measures
+04. Risk measures =
+Row("Column", BLANK())
+
+// Table: 05. Dynamic measures
+05. Dynamic measures =
+Row("Column", BLANK())
+
+// Table: 06. Executive Insights
+06. Executive Insights =
+Row("Column", BLANK())
+
+// Table: Calendar
+Calendar =
+ADDCOLUMNS(
+    CALENDAR(
+        DATE(2023, 1, 1),
+        DATE(2026, 12, 31)
+    ),
+    "Year", YEAR([Date]),
+    "Month Number", MONTH([Date]),
+    "Month Name", FORMAT([Date], "MMMM"),
+    "Month Short", FORMAT([Date], "MMM"),
+    "Year Month", FORMAT([Date], "YYYY-MM"),
+    "Quarter", "Q" & QUARTER([Date]),
+    "Year Quarter",
+        YEAR([Date]) & "-Q" & QUARTER([Date]),
+    "Month Start",
+        DATE(YEAR([Date]), MONTH([Date]), 1)
+)
+
+// Table: Contract Risk Categories
+Contract Risk Categories =
+DATATABLE(
+    "Risk", STRING,
+    "Sort", INTEGER,
+    {
+        {"Low", 1},
+        {"Medium", 2},
+        {"High", 3},
+        {"Insufficient Data", 4}
+    }
+)
+
+// Table: Operations Heatmap Selector
+Operations Heatmap Selector =
+DATATABLE(
+    "Metric", STRING,
+    "Sort Order", INTEGER,
+    {
+        {"On-Time Completion %", 1},
+        {"Repeat Visit Rate %", 2},
+        {"Labour Hours Variance %", 3},
+        {"Operational Risk Score", 4}
+    }
+)
+
+// Table: Operations Trend Selector
+Operations Trend Selector =
+DATATABLE(
+    "Metric", STRING,
+    "Sort Order", INTEGER,
+    {
+        {"Workload", 1},
+        {"Delivery Timeliness", 2},
+        {"Labour Efficiency", 3}
+    }
+)
+
+// Table: Operations Trend Series
+Operations Trend Series =
+DATATABLE(
+    "Metric", STRING,
+    "Series", STRING,
+    "Sort", INTEGER,
+    {
+        {"Workload", "Jobs Completed", 1},
+        {"Workload", "Jobs Scheduled", 2},
+        {"Delivery Timeliness", "On-Time Jobs", 1},
+        {"Delivery Timeliness", "Late Jobs", 2},
+        {"Labour Efficiency", "Actual Labour Hours", 1},
+        {"Labour Efficiency", "Planned Labour Hours", 2}
+    }
+)
+
+// Table: Overview Trend Series
+Overview Trend Series =
+DATATABLE(
+    "Metric", STRING,
+    "Series", STRING,
+    "Sort Order", INTEGER,
+    {
+        {"Revenue", "Revenue", 1},
+        {"Revenue", "Budget Revenue", 2},
+        {"Revenue", "Revenue PY", 3},
+
+        {"Gross Profit", "Gross Profit", 1},
+        {"Gross Profit", "Budget Gross Profit", 2},
+        {"Gross Profit", "Gross Profit PY", 3},
+
+        {"Gross Margin %", "Gross Margin %", 1},
+        {"Gross Margin %", "Budget Gross Margin %", 2},
+        {"Gross Margin %", "Gross Margin PY", 3},
+
+        {"Jobs Completed", "Jobs Completed", 1},
+        {"Jobs Completed", "Jobs Scheduled", 2},
+        {"Jobs Completed", "Jobs Completed PY", 3}
+    }
+)
+
+// Table: Performance Metric Selector
+Performance Metric Selector =
+DATATABLE(
+    "Metric", STRING,
+    "Sort Order", INTEGER,
+    {
+        {"Revenue", 1},
+        {"Gross Profit", 2},
+        {"Gross Margin %", 3},
+        {"Jobs Completed", 4}
+    }
+)
+
+// Table: Profit Analysis Level
+Profit Analysis Level =
+{
+    ("Contracts", NAMEOF(dim_contracts[Contract]), 0),
+    ("Clients", NAMEOF(dim_clients[Client]), 1)
+}
+
+// Table: Profit Level Selector
+Profit Level Selector =
+DATATABLE(
+    "Level", STRING,
+    {
+        {"Contracts"},
+        {"Clients"}
+    }
+)
+
+// Table: Profit Ranking Selector
+Profit Ranking Selector =
+DATATABLE(
+    "Ranking", STRING,
+    {
+        {"Top 10"},
+        {"Bottom 10"}
+    }
+)

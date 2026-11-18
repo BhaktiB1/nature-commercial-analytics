@@ -1,0 +1,91 @@
+relationship cf539917-b813-4bda-a09b-04c827f95477
+	joinOnDateBehavior: datePartOnly
+	fromColumn: Calendar.Date
+	toColumn: LocalDateTable_d30e57af-7677-427e-bcdc-0ec5cb454a54.Date
+
+relationship e737ea5d-964e-4111-87fc-667d971baeec
+	joinOnDateBehavior: datePartOnly
+	fromColumn: Calendar.'Month Start'
+	toColumn: LocalDateTable_e3f6889f-ffc7-4eab-b37c-e7431da26587.Date
+
+relationship db627c2b-565b-4d01-8454-8efb193aa796
+	joinOnDateBehavior: datePartOnly
+	fromColumn: fact_contract_events.event_date
+	toColumn: LocalDateTable_4d1e6628-ab4d-43c4-95ba-d57e79bbf05c.Date
+
+relationship 43b6a07d-2846-4856-91d3-a746a8c03d58
+	joinOnDateBehavior: datePartOnly
+	fromColumn: fact_jobs.first_invoice_date
+	toColumn: LocalDateTable_6197708e-9178-49b9-97f0-63d8fc3a2a00.Date
+
+relationship 51347577-6822-45f9-90d1-2e563c661a07
+	joinOnDateBehavior: datePartOnly
+	fromColumn: dim_contracts.contract_start
+	toColumn: LocalDateTable_81b1030a-c371-4c02-afbb-b4039b1fe853.Date
+
+relationship 5c06ca16-5e7c-4022-9b80-f6b91f881857
+	joinOnDateBehavior: datePartOnly
+	fromColumn: dim_contracts.contract_end
+	toColumn: LocalDateTable_8e432ead-be1f-4245-aac8-5a7202ea1906.Date
+
+relationship 8931ce5e-3287-469d-952d-362083ec12c7
+	joinOnDateBehavior: datePartOnly
+	fromColumn: qa_contract_month_reconciliation.month
+	toColumn: LocalDateTable_ae22da21-2a3d-4848-b6b2-11c9060cf90d.Date
+
+relationship AutoDetected_20abdeac-dbd7-4645-ba66-f3a4261666e0
+	fromColumn: fact_invoices.contract_id
+	toColumn: dim_contracts.contract_id
+
+relationship AutoDetected_bd4cb04b-f7c7-48d8-88b8-d87c69dc3dea
+	fromColumn: fact_contract_events.contract_id
+	toColumn: dim_contracts.contract_id
+
+relationship AutoDetected_0ded07ce-f83f-4cfb-b8c9-fc7275b4020d
+	fromColumn: fact_monthly_budgets.contract_id
+	toColumn: dim_contracts.contract_id
+
+relationship AutoDetected_fdecb3e7-6c56-4c5d-8709-67e2e5eaefd5
+	fromColumn: fact_jobs.contract_id
+	toColumn: dim_contracts.contract_id
+
+relationship AutoDetected_e6f56b1b-4ef6-4870-8792-9588675529f1
+	fromColumn: qa_contract_month_reconciliation.contract_id
+	toColumn: dim_contracts.contract_id
+
+relationship AutoDetected_1a7d9d98-ba83-484b-84d1-b856a8bc17cf
+	fromColumn: dim_contracts.service_id
+	toColumn: dim_services.service_id
+
+relationship AutoDetected_08a14842-ea9c-4006-a191-4539d1be1bb7
+	fromColumn: dim_contracts.region_id
+	toColumn: dim_regions.region_id
+
+relationship AutoDetected_abcc06ad-42e3-4302-8ada-9fc6a65995f2
+	fromColumn: dim_contracts.client_id
+	toColumn: dim_clients.client_id
+
+relationship 18f429ae-fd81-b769-0b7f-5d0af99636e9
+	fromColumn: fact_jobs.completed_date
+	toColumn: Calendar.Date
+
+relationship 88134c72-dcb5-ec7e-516e-197b847c8277
+	isActive: false
+	fromColumn: fact_jobs.scheduled_date
+	toColumn: Calendar.Date
+
+relationship c117203a-c865-0ee7-d589-aec9348a9c7d
+	isActive: false
+	fromColumn: fact_jobs.due_date
+	toColumn: Calendar.Date
+
+relationship 4c3e5c2b-1e0d-e80b-2484-cb81005a4ebd
+	isActive: false
+	fromColumn: fact_invoices.invoice_date
+	toColumn: Calendar.Date
+
+relationship 467366d4-c776-9556-2f16-a43d7c93cbb3
+	fromColumn: fact_monthly_budgets.month
+	toColumn: Calendar.Date
+
+

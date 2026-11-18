@@ -1,0 +1,70 @@
+// 05. Dynamic measures | Overview Trend Value
+			
+			VAR SelectedMetric =
+			    SELECTEDVALUE(
+			        'Performance Metric Selector'[Metric],
+			        "Revenue"
+			    )
+			
+			VAR SeriesMetric =
+			    SELECTEDVALUE('Overview Trend Series'[Metric])
+			
+			VAR SeriesOrder =
+			    SELECTEDVALUE('Overview Trend Series'[Sort Order])
+			
+			RETURN
+			IF(
+			    SelectedMetric = SeriesMetric,
+			    SWITCH(
+			        SeriesOrder,
+			        1, [Dynamic Actual],
+			        2, [Dynamic Budget / Scheduled],
+			        3, [Dynamic Previous Year],
+			        BLANK()
+			    )
+			)
+		lineageTag: b373072e-896a-47d1-9b3f-af7167ec1af9
+
+		formatStringDefinition =
+				SWITCH(
+				    SELECTEDVALUE(
+				        'Performance Metric Selector'[Metric],
+				        "Revenue"
+				    ),
+				    "Gross Margin %", "0.00%",
+				    "Jobs Completed", "#,##0",
+				    "£#,##0"
+				)
+
+
+// 05. Dynamic measures | Operations Heatmap Value
+			
+			VAR SelectedMetric =
+			    SELECTEDVALUE(
+			        'Operations Heatmap Selector'[Metric],
+			        "On-Time Completion %"
+			    )
+			RETURN
+			SWITCH(
+			    SelectedMetric,
+			    "On-Time Completion %", [On-Time Completion %],
+			    "Repeat Visit Rate %", [Repeat Visit Rate %],
+			    "Labour Hours Variance %", [Labour Hours Variance %],
+			    "Operational Risk Score", [Risk Score],
+			    BLANK()
+			)
+		lineageTag: c1e6c161-5d0a-40c9-bb76-56738ff3bb77
+
+		formatStringDefinition =
+				VAR Metric =
+				    SELECTEDVALUE(
+				        'Operations Heatmap Selector'[Metric],
+				        "On-Time Completion %"
+				    )
+				RETURN
+				IF(
+				    Metric = "Operational Risk Score",
+				    "0",
+				    "0.00%"
+				)
+

@@ -1,0 +1,39 @@
+{
+  "years": {
+    "2024": {
+      "completed_jobs": 23867,
+      "revenue_gbp": 19307562.46,
+      "cost_gbp": 12382301.28,
+      "on_time_pct": 83.19,
+      "budget_revenue_gbp": 18434259.45
+    },
+    "2025": {
+      "completed_jobs": 23856,
+      "revenue_gbp": 19276978.94,
+      "cost_gbp": 12335089.18,
+      "on_time_pct": 82.97,
+      "budget_revenue_gbp": 18592593.74
+    },
+    "2026": {
+      "completed_jobs": 22279,
+      "revenue_gbp": 18872999.54,
+      "cost_gbp": 12069949.73,
+      "on_time_pct": 82.91,
+      "budget_revenue_gbp": 17805577.62
+    }
+  },
+  "row_counts": {
+    "dim_contracts": 180,
+    "fact_jobs": 70163,
+    "fact_jobs_enriched": 70163,
+    "fact_job_costs": 70002,
+    "fact_invoices": 69510,
+    "fact_monthly_budgets": 6107,
+    "fact_contract_events": 442,
+    "qa_contract_month_reconciliation": 6231
+  },
+  "prior_open_jobs_completed_in_2026": 277,
+  "active_contracts_at_2026_end": 127,
+  "expired_contracts_at_2026_end": 53,
+  "max_bridge_check_gbp": 0.0
+}

@@ -1,0 +1,34 @@
+﻿Table,Partition type,Auto date table
+01. Financial measures,m,No
+02. Operational measures,m,No
+03. Contract measures,calculated,No
+04. Risk measures,calculated,No
+05. Dynamic measures,calculated,No
+06. Executive Insights,calculated,No
+Calendar,calculated,No
+Contract Risk Categories,calculated,No
+DateTableTemplate_36d6d491-4131-4abb-8425-c26cfa355171,calculated,Yes
+dim_clients,m,No
+dim_contracts,m,No
+dim_regions,m,No
+dim_services,m,No
+fact_contract_events,m,No
+fact_invoices,m,No
+fact_jobs,m,No
+fact_monthly_budgets,m,No
+LocalDateTable_4d1e6628-ab4d-43c4-95ba-d57e79bbf05c,calculated,Yes
+LocalDateTable_6197708e-9178-49b9-97f0-63d8fc3a2a00,calculated,Yes
+LocalDateTable_81b1030a-c371-4c02-afbb-b4039b1fe853,calculated,Yes
+LocalDateTable_8e432ead-be1f-4245-aac8-5a7202ea1906,calculated,Yes
+LocalDateTable_ae22da21-2a3d-4848-b6b2-11c9060cf90d,calculated,Yes
+LocalDateTable_d30e57af-7677-427e-bcdc-0ec5cb454a54,calculated,Yes
+LocalDateTable_e3f6889f-ffc7-4eab-b37c-e7431da26587,calculated,Yes
+Operations Heatmap Selector,calculated,No
+Operations Trend Selector,calculated,No
+Operations Trend Series,calculated,No
+Overview Trend Series,calculated,No
+Performance Metric Selector,calculated,No
+Profit Analysis Level,calculated,No
+Profit Level Selector,calculated,No
+Profit Ranking Selector,calculated,No
+qa_contract_month_reconciliation,m,No

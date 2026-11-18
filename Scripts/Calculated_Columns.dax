@@ -1,0 +1,69 @@
+// Table: dim_clients
+Client =
+dim_clients[client_id] & " - " & dim_clients[client_name]
+
+// Table: dim_contracts
+Contract =
+dim_contracts[contract_id] & " - " & dim_contracts[client_id]
+
+// Table: dim_contracts
+Expiry Period =
+VAR DaysRemaining =
+    DATEDIFF(
+        TODAY(),
+        dim_contracts[contract_end],
+        DAY
+    )
+RETURN
+SWITCH(
+    TRUE(),
+    ISBLANK(dim_contracts[contract_end]), "Unknown",
+    DaysRemaining < 0, "Expired",
+    DaysRemaining <= 90, "0–90 Days",
+    DaysRemaining <= 180, "91–180 Days",
+    DaysRemaining <= 365, "181–365 Days",
+    "Over 365 Days"
+)
+
+// Table: dim_contracts
+Expiry Period Sort =
+VAR EndDate = dim_contracts[contract_end]
+VAR DaysRemaining =
+    DATEDIFF(TODAY(), EndDate, DAY)
+RETURN
+SWITCH(
+    TRUE(),
+    ISBLANK(EndDate), 5,
+    DaysRemaining < 0, 0,
+    DaysRemaining <= 90, 1,
+    DaysRemaining <= 180, 2,
+    DaysRemaining <= 365, 3,
+    4
+)
+
+// Table: fact_jobs
+Delay Severity =
+VAR DaysLate = fact_jobs[days_late]
+RETURN
+SWITCH(
+    TRUE(),
+    fact_jobs[is_completed] <> 1, BLANK(),
+    ISBLANK(DaysLate), BLANK(),
+    DaysLate <= 0, "On Time",
+    DaysLate <= 2, "1–2 days",
+    DaysLate <= 7, "3–7 days",
+    DaysLate <= 14, "8–14 days",
+    "15+ days"
+)
+
+// Table: fact_jobs
+Delay Severity Sort =
+SWITCH(
+    fact_jobs[Delay Severity],
+    "On Time", 0,
+    "1–2 days", 1,
+    "3–7 days", 2,
+    "8–14 days", 3,
+    "15+ days", 4,
+    BLANK()
+)

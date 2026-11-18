@@ -1,0 +1,220 @@
+﻿Table,Column,Model data type (if explicit),Source column,Kind,Format,Expression,Auto date table
+01. Financial measures,Column1,string,Column1,Model column,,,No
+02. Operational measures,Column1,string,Column1,Model column,,,No
+03. Contract measures,Column,,[Column],Model column,0,,No
+04. Risk measures,Column,,[Column],Model column,0,,No
+05. Dynamic measures,Column,,[Column],Model column,0,,No
+06. Executive Insights,Column,,[Column],Model column,0,,No
+Calendar,Date,,[Date],Model column,General Date,,No
+Calendar,Year,,[Year],Model column,0,,No
+Calendar,Month Number,,[Month Number],Model column,0,,No
+Calendar,Month Name,,[Month Name],Model column,,,No
+Calendar,Month Short,,[Month Short],Model column,,,No
+Calendar,Year Month,,[Year Month],Model column,,,No
+Calendar,Quarter,,[Quarter],Model column,,,No
+Calendar,Year Quarter,,[Year Quarter],Model column,,,No
+Calendar,Month Start,,[Month Start],Model column,General Date,,No
+Contract Risk Categories,Risk,,[Risk],Model column,,,No
+Contract Risk Categories,Sort,,[Sort],Model column,0,,No
+DateTableTemplate_36d6d491-4131-4abb-8425-c26cfa355171,Date,dateTime,[Date],Model column,General Date,,Yes
+DateTableTemplate_36d6d491-4131-4abb-8425-c26cfa355171,Year,int64,,Calculated column,0,YEAR([Date]),Yes
+DateTableTemplate_36d6d491-4131-4abb-8425-c26cfa355171,MonthNo,int64,,Calculated column,0,MONTH([Date]),Yes
+DateTableTemplate_36d6d491-4131-4abb-8425-c26cfa355171,Month,string,,Calculated column,,"FORMAT([Date], ""MMMM"")",Yes
+DateTableTemplate_36d6d491-4131-4abb-8425-c26cfa355171,QuarterNo,int64,,Calculated column,0,INT(([MonthNo] + 2) / 3),Yes
+DateTableTemplate_36d6d491-4131-4abb-8425-c26cfa355171,Quarter,string,,Calculated column,,"""Qtr "" & [QuarterNo]",Yes
+DateTableTemplate_36d6d491-4131-4abb-8425-c26cfa355171,Day,int64,,Calculated column,0,DAY([Date]),Yes
+dim_clients,client_id,string,client_id,Model column,,,No
+dim_clients,client_name,string,client_name,Model column,,,No
+dim_clients,sector,string,sector,Model column,,,No
+dim_clients,Client,,,Calculated column,,"dim_clients[client_id] & "" - "" & dim_clients[client_name]",No
+dim_contracts,contract_id,string,contract_id,Model column,,,No
+dim_contracts,client_id,string,client_id,Model column,,,No
+dim_contracts,region_id,string,region_id,Model column,,,No
+dim_contracts,service_id,string,service_id,Model column,,,No
+dim_contracts,contract_start,dateTime,contract_start,Model column,Short Date,,No
+dim_contracts,contract_end,dateTime,contract_end,Model column,Short Date,,No
+dim_contracts,annual_contract_value_gbp,int64,annual_contract_value_gbp,Model column,0,,No
+dim_contracts,contract_status,string,contract_status,Model column,,,No
+dim_contracts,Contract,,,Calculated column,,"dim_contracts[contract_id] & "" - "" & dim_contracts[client_id]",No
+dim_contracts,Expiry Period,,,Calculated column,,"VAR DaysRemaining =
+    DATEDIFF(
+        TODAY(),
+        dim_contracts[contract_end],
+        DAY
+    )
+RETURN
+SWITCH(
+    TRUE(),
+    ISBLANK(dim_contracts[contract_end]), ""Unknown"",
+    DaysRemaining < 0, ""Expired"",
+    DaysRemaining <= 90, ""0–90 Days"",
+    DaysRemaining <= 180, ""91–180 Days"",
+    DaysRemaining <= 365, ""181–365 Days"",
+    ""Over 365 Days""
+)",No
+dim_contracts,Expiry Period Sort,,,Calculated column,0,"VAR EndDate = dim_contracts[contract_end]
+VAR DaysRemaining =
+    DATEDIFF(TODAY(), EndDate, DAY)
+RETURN
+SWITCH(
+    TRUE(),
+    ISBLANK(EndDate), 5,
+    DaysRemaining < 0, 0,
+    DaysRemaining <= 90, 1,
+    DaysRemaining <= 180, 2,
+    DaysRemaining <= 365, 3,
+    4
+)",No
+dim_regions,region_id,string,region_id,Model column,,,No
+dim_regions,region_name,string,region_name,Model column,,,No
+dim_services,service_id,string,service_id,Model column,,,No
+dim_services,service_name,string,service_name,Model column,,,No
+fact_contract_events,event_id,string,event_id,Model column,,,No
+fact_contract_events,contract_id,string,contract_id,Model column,,,No
+fact_contract_events,event_date,dateTime,event_date,Model column,Long Date,,No
+fact_contract_events,event_type,string,event_type,Model column,,,No
+fact_invoices,invoice_id,string,invoice_id,Model column,,,No
+fact_invoices,job_id,string,job_id,Model column,,,No
+fact_invoices,contract_id,string,contract_id,Model column,,,No
+fact_invoices,invoice_date,dateTime,invoice_date,Model column,Long Date,,No
+fact_invoices,invoice_amount_gbp,double,invoice_amount_gbp,Model column,,,No
+fact_invoices,invoice_status,string,invoice_status,Model column,,,No
+fact_jobs,job_id,string,job_id,Model column,,,No
+fact_jobs,contract_id,string,contract_id,Model column,,,No
+fact_jobs,scheduled_date,dateTime,scheduled_date,Model column,Long Date,,No
+fact_jobs,due_date,dateTime,due_date,Model column,Long Date,,No
+fact_jobs,completed_date,dateTime,completed_date,Model column,Long Date,,No
+fact_jobs,job_status,string,job_status,Model column,,,No
+fact_jobs,job_type,string,job_type,Model column,,,No
+fact_jobs,job_priority,string,job_priority,Model column,,,No
+fact_jobs,weather_disruption_flag,int64,weather_disruption_flag,Model column,0,,No
+fact_jobs,resource_shortage_flag,int64,resource_shortage_flag,Model column,0,,No
+fact_jobs,planned_labour_hours,double,planned_labour_hours,Model column,,,No
+fact_jobs,actual_labour_hours,double,actual_labour_hours,Model column,,,No
+fact_jobs,planned_job_cost_gbp,double,planned_job_cost_gbp,Model column,,,No
+fact_jobs,repeat_visit_flag,int64,repeat_visit_flag,Model column,0,,No
+fact_jobs,job_earned_revenue_gbp,double,job_earned_revenue_gbp,Model column,,,No
+fact_jobs,invoice_count,int64,invoice_count,Model column,0,,No
+fact_jobs,first_invoice_date,dateTime,first_invoice_date,Model column,Long Date,,No
+fact_jobs,has_invoice,int64,has_invoice,Model column,0,,No
+fact_jobs,has_cost,int64,has_cost,Model column,0,,No
+fact_jobs,is_completed,int64,is_completed,Model column,0,,No
+fact_jobs,is_on_time,int64,is_on_time,Model column,0,,No
+fact_jobs,days_late,int64,days_late,Model column,0,,No
+fact_jobs,labour_cost_gbp,double,labour_cost_gbp,Model column,,,No
+fact_jobs,overtime_cost_gbp,double,overtime_cost_gbp,Model column,,,No
+fact_jobs,materials_cost_gbp,double,materials_cost_gbp,Model column,,,No
+fact_jobs,travel_cost_gbp,double,travel_cost_gbp,Model column,,,No
+fact_jobs,subcontractor_cost_gbp,double,subcontractor_cost_gbp,Model column,,,No
+fact_jobs,total_actual_cost_gbp,double,total_actual_cost_gbp,Model column,,,No
+fact_jobs,Delay Severity,,,Calculated column,,"VAR DaysLate = fact_jobs[days_late]
+RETURN
+SWITCH(
+    TRUE(),
+    fact_jobs[is_completed] <> 1, BLANK(),
+    ISBLANK(DaysLate), BLANK(),
+    DaysLate <= 0, ""On Time"",
+    DaysLate <= 2, ""1–2 days"",
+    DaysLate <= 7, ""3–7 days"",
+    DaysLate <= 14, ""8–14 days"",
+    ""15+ days""
+)",No
+fact_jobs,Delay Severity Sort,,,Calculated column,0,"SWITCH(
+    fact_jobs[Delay Severity],
+    ""On Time"", 0,
+    ""1–2 days"", 1,
+    ""3–7 days"", 2,
+    ""8–14 days"", 3,
+    ""15+ days"", 4,
+    BLANK()
+)",No
+fact_monthly_budgets,contract_id,string,contract_id,Model column,,,No
+fact_monthly_budgets,month,dateTime,month,Model column,Long Date,,No
+fact_monthly_budgets,budgeted_jobs,int64,budgeted_jobs,Model column,0,,No
+fact_monthly_budgets,budgeted_labour_hours,double,budgeted_labour_hours,Model column,,,No
+fact_monthly_budgets,budgeted_cost_gbp,double,budgeted_cost_gbp,Model column,,,No
+fact_monthly_budgets,budgeted_revenue_gbp,double,budgeted_revenue_gbp,Model column,,,No
+LocalDateTable_4d1e6628-ab4d-43c4-95ba-d57e79bbf05c,Date,dateTime,[Date],Model column,General Date,,Yes
+LocalDateTable_4d1e6628-ab4d-43c4-95ba-d57e79bbf05c,Year,int64,,Calculated column,0,YEAR([Date]),Yes
+LocalDateTable_4d1e6628-ab4d-43c4-95ba-d57e79bbf05c,MonthNo,int64,,Calculated column,0,MONTH([Date]),Yes
+LocalDateTable_4d1e6628-ab4d-43c4-95ba-d57e79bbf05c,Month,string,,Calculated column,,"FORMAT([Date], ""MMMM"")",Yes
+LocalDateTable_4d1e6628-ab4d-43c4-95ba-d57e79bbf05c,QuarterNo,int64,,Calculated column,0,INT(([MonthNo] + 2) / 3),Yes
+LocalDateTable_4d1e6628-ab4d-43c4-95ba-d57e79bbf05c,Quarter,string,,Calculated column,,"""Qtr "" & [QuarterNo]",Yes
+LocalDateTable_4d1e6628-ab4d-43c4-95ba-d57e79bbf05c,Day,int64,,Calculated column,0,DAY([Date]),Yes
+LocalDateTable_6197708e-9178-49b9-97f0-63d8fc3a2a00,Date,dateTime,[Date],Model column,General Date,,Yes
+LocalDateTable_6197708e-9178-49b9-97f0-63d8fc3a2a00,Year,int64,,Calculated column,0,YEAR([Date]),Yes
+LocalDateTable_6197708e-9178-49b9-97f0-63d8fc3a2a00,MonthNo,int64,,Calculated column,0,MONTH([Date]),Yes
+LocalDateTable_6197708e-9178-49b9-97f0-63d8fc3a2a00,Month,string,,Calculated column,,"FORMAT([Date], ""MMMM"")",Yes
+LocalDateTable_6197708e-9178-49b9-97f0-63d8fc3a2a00,QuarterNo,int64,,Calculated column,0,INT(([MonthNo] + 2) / 3),Yes
+LocalDateTable_6197708e-9178-49b9-97f0-63d8fc3a2a00,Quarter,string,,Calculated column,,"""Qtr "" & [QuarterNo]",Yes
+LocalDateTable_6197708e-9178-49b9-97f0-63d8fc3a2a00,Day,int64,,Calculated column,0,DAY([Date]),Yes
+LocalDateTable_81b1030a-c371-4c02-afbb-b4039b1fe853,Date,dateTime,[Date],Model column,General Date,,Yes
+LocalDateTable_81b1030a-c371-4c02-afbb-b4039b1fe853,Year,int64,,Calculated column,0,YEAR([Date]),Yes
+LocalDateTable_81b1030a-c371-4c02-afbb-b4039b1fe853,MonthNo,int64,,Calculated column,0,MONTH([Date]),Yes
+LocalDateTable_81b1030a-c371-4c02-afbb-b4039b1fe853,Month,string,,Calculated column,,"FORMAT([Date], ""MMMM"")",Yes
+LocalDateTable_81b1030a-c371-4c02-afbb-b4039b1fe853,QuarterNo,int64,,Calculated column,0,INT(([MonthNo] + 2) / 3),Yes
+LocalDateTable_81b1030a-c371-4c02-afbb-b4039b1fe853,Quarter,string,,Calculated column,,"""Qtr "" & [QuarterNo]",Yes
+LocalDateTable_81b1030a-c371-4c02-afbb-b4039b1fe853,Day,int64,,Calculated column,0,DAY([Date]),Yes
+LocalDateTable_8e432ead-be1f-4245-aac8-5a7202ea1906,Date,dateTime,[Date],Model column,General Date,,Yes
+LocalDateTable_8e432ead-be1f-4245-aac8-5a7202ea1906,Year,int64,,Calculated column,0,YEAR([Date]),Yes
+LocalDateTable_8e432ead-be1f-4245-aac8-5a7202ea1906,MonthNo,int64,,Calculated column,0,MONTH([Date]),Yes
+LocalDateTable_8e432ead-be1f-4245-aac8-5a7202ea1906,Month,string,,Calculated column,,"FORMAT([Date], ""MMMM"")",Yes
+LocalDateTable_8e432ead-be1f-4245-aac8-5a7202ea1906,QuarterNo,int64,,Calculated column,0,INT(([MonthNo] + 2) / 3),Yes
+LocalDateTable_8e432ead-be1f-4245-aac8-5a7202ea1906,Quarter,string,,Calculated column,,"""Qtr "" & [QuarterNo]",Yes
+LocalDateTable_8e432ead-be1f-4245-aac8-5a7202ea1906,Day,int64,,Calculated column,0,DAY([Date]),Yes
+LocalDateTable_ae22da21-2a3d-4848-b6b2-11c9060cf90d,Date,dateTime,[Date],Model column,General Date,,Yes
+LocalDateTable_ae22da21-2a3d-4848-b6b2-11c9060cf90d,Year,int64,,Calculated column,0,YEAR([Date]),Yes
+LocalDateTable_ae22da21-2a3d-4848-b6b2-11c9060cf90d,MonthNo,int64,,Calculated column,0,MONTH([Date]),Yes
+LocalDateTable_ae22da21-2a3d-4848-b6b2-11c9060cf90d,Month,string,,Calculated column,,"FORMAT([Date], ""MMMM"")",Yes
+LocalDateTable_ae22da21-2a3d-4848-b6b2-11c9060cf90d,QuarterNo,int64,,Calculated column,0,INT(([MonthNo] + 2) / 3),Yes
+LocalDateTable_ae22da21-2a3d-4848-b6b2-11c9060cf90d,Quarter,string,,Calculated column,,"""Qtr "" & [QuarterNo]",Yes
+LocalDateTable_ae22da21-2a3d-4848-b6b2-11c9060cf90d,Day,int64,,Calculated column,0,DAY([Date]),Yes
+LocalDateTable_d30e57af-7677-427e-bcdc-0ec5cb454a54,Date,dateTime,[Date],Model column,General Date,,Yes
+LocalDateTable_d30e57af-7677-427e-bcdc-0ec5cb454a54,Year,int64,,Calculated column,0,YEAR([Date]),Yes
+LocalDateTable_d30e57af-7677-427e-bcdc-0ec5cb454a54,MonthNo,int64,,Calculated column,0,MONTH([Date]),Yes
+LocalDateTable_d30e57af-7677-427e-bcdc-0ec5cb454a54,Month,string,,Calculated column,,"FORMAT([Date], ""MMMM"")",Yes
+LocalDateTable_d30e57af-7677-427e-bcdc-0ec5cb454a54,QuarterNo,int64,,Calculated column,0,INT(([MonthNo] + 2) / 3),Yes
+LocalDateTable_d30e57af-7677-427e-bcdc-0ec5cb454a54,Quarter,string,,Calculated column,,"""Qtr "" & [QuarterNo]",Yes
+LocalDateTable_d30e57af-7677-427e-bcdc-0ec5cb454a54,Day,int64,,Calculated column,0,DAY([Date]),Yes
+LocalDateTable_e3f6889f-ffc7-4eab-b37c-e7431da26587,Date,dateTime,[Date],Model column,General Date,,Yes
+LocalDateTable_e3f6889f-ffc7-4eab-b37c-e7431da26587,Year,int64,,Calculated column,0,YEAR([Date]),Yes
+LocalDateTable_e3f6889f-ffc7-4eab-b37c-e7431da26587,MonthNo,int64,,Calculated column,0,MONTH([Date]),Yes
+LocalDateTable_e3f6889f-ffc7-4eab-b37c-e7431da26587,Month,string,,Calculated column,,"FORMAT([Date], ""MMMM"")",Yes
+LocalDateTable_e3f6889f-ffc7-4eab-b37c-e7431da26587,QuarterNo,int64,,Calculated column,0,INT(([MonthNo] + 2) / 3),Yes
+LocalDateTable_e3f6889f-ffc7-4eab-b37c-e7431da26587,Quarter,string,,Calculated column,,"""Qtr "" & [QuarterNo]",Yes
+LocalDateTable_e3f6889f-ffc7-4eab-b37c-e7431da26587,Day,int64,,Calculated column,0,DAY([Date]),Yes
+Operations Heatmap Selector,Metric,,[Metric],Model column,,,No
+Operations Heatmap Selector,Sort Order,,[Sort Order],Model column,0,,No
+Operations Trend Selector,Metric,,[Metric],Model column,,,No
+Operations Trend Selector,Sort Order,,[Sort Order],Model column,0,,No
+Operations Trend Series,Metric,,[Metric],Model column,,,No
+Operations Trend Series,Series,,[Series],Model column,,,No
+Operations Trend Series,Sort,,[Sort],Model column,0,,No
+Overview Trend Series,Metric,,[Metric],Model column,,,No
+Overview Trend Series,Series,,[Series],Model column,,,No
+Overview Trend Series,Sort Order,,[Sort Order],Model column,0,,No
+Performance Metric Selector,Metric,,[Metric],Model column,,,No
+Performance Metric Selector,Sort Order,,[Sort Order],Model column,0,,No
+Profit Analysis Level,Profit Analysis Level,,[Value1],Model column,,,No
+Profit Analysis Level,Profit Analysis Level Fields,,[Value2],Model column,,,No
+Profit Analysis Level,Profit Analysis Level Order,,[Value3],Model column,0,,No
+Profit Level Selector,Level,,[Level],Model column,,,No
+Profit Ranking Selector,Ranking,,[Ranking],Model column,,,No
+qa_contract_month_reconciliation,contract_id,string,contract_id,Model column,,,No
+qa_contract_month_reconciliation,month,dateTime,month,Model column,Long Date,,No
+qa_contract_month_reconciliation,budgeted_jobs,int64,budgeted_jobs,Model column,0,,No
+qa_contract_month_reconciliation,budgeted_labour_hours,double,budgeted_labour_hours,Model column,,,No
+qa_contract_month_reconciliation,budgeted_cost_gbp,double,budgeted_cost_gbp,Model column,,,No
+qa_contract_month_reconciliation,budgeted_revenue_gbp,double,budgeted_revenue_gbp,Model column,,,No
+qa_contract_month_reconciliation,actual_jobs,int64,actual_jobs,Model column,0,,No
+qa_contract_month_reconciliation,actual_revenue_gbp,double,actual_revenue_gbp,Model column,,,No
+qa_contract_month_reconciliation,actual_cost_gbp,double,actual_cost_gbp,Model column,,,No
+qa_contract_month_reconciliation,has_budget,int64,has_budget,Model column,0,,No
+qa_contract_month_reconciliation,budget_gp_gbp,double,budget_gp_gbp,Model column,,,No
+qa_contract_month_reconciliation,actual_gp_gbp,double,actual_gp_gbp,Model column,,,No
+qa_contract_month_reconciliation,gp_variance_gbp,double,gp_variance_gbp,Model column,,,No
+qa_contract_month_reconciliation,gp_effect_volume_gbp,double,gp_effect_volume_gbp,Model column,,,No
+qa_contract_month_reconciliation,gp_effect_revenue_rate_gbp,double,gp_effect_revenue_rate_gbp,Model column,,,No
+qa_contract_month_reconciliation,gp_effect_cost_rate_gbp,double,gp_effect_cost_rate_gbp,Model column,,,No
+qa_contract_month_reconciliation,gp_effect_unbudgeted_gbp,double,gp_effect_unbudgeted_gbp,Model column,,,No
+qa_contract_month_reconciliation,bridge_check_gbp,int64,bridge_check_gbp,Model column,0,,No

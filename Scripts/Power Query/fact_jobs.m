@@ -1,0 +1,6 @@
+let
+  Source = Csv.Document(File.Contents("C:\Portfolio\Nature\Data\fact_jobs_enriched.csv"), [Delimiter = ",", Columns = 28, QuoteStyle = QuoteStyle.None]),
+  #"Promoted headers" = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+  #"Changed column type" = Table.TransformColumnTypes(#"Promoted headers", {{"job_id", type text}, {"contract_id", type text}, {"scheduled_date", type date}, {"due_date", type date}, {"completed_date", type date}, {"job_status", type text}, {"job_type", type text}, {"job_priority", type text}, {"weather_disruption_flag", Int64.Type}, {"resource_shortage_flag", Int64.Type}, {"planned_labour_hours", type number}, {"actual_labour_hours", type number}, {"planned_job_cost_gbp", type number}, {"repeat_visit_flag", Int64.Type}, {"job_earned_revenue_gbp", type number}, {"invoice_count", Int64.Type}, {"first_invoice_date", type date}, {"has_invoice", Int64.Type}, {"has_cost", Int64.Type}, {"is_completed", Int64.Type}, {"is_on_time", Int64.Type}, {"days_late", Int64.Type}, {"labour_cost_gbp", type number}, {"overtime_cost_gbp", type number}, {"materials_cost_gbp", type number}, {"travel_cost_gbp", type number}, {"subcontractor_cost_gbp", type number}, {"total_actual_cost_gbp", type number}}, "en-US")
+in
+  #"Changed column type"
